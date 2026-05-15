@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>포켓몬 30주년 뿌띠뿌띠씰 도감</title>
+  <style>
+    :root {
+      --bg: #f7c600;
+      --card: #ffffff;
+      --text: #161616;
+      --muted: #666;
+      --line: rgba(0,0,0,.12);
+      --accent: #e60012;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: linear-gradient(180deg, rgba(247,198,0,.98), rgba(247,198,0,.9));
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+      padding: 18px 16px 14px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(24px, 4vw, 44px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .red { color: var(--accent); }
+
+    .sub {
+      margin: 0;
+      font-size: clamp(14px, 2vw, 20px);
+      font-weight: 800;
+    }
+
+    .toolbar {
+      max-width: 1060px;
+      margin: 16px auto 0;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .progress-wrap {
+      min-width: min(460px, 100%);
+      background: rgba(255,255,255,.55);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      overflow: hidden;
+      height: 34px;
+      position: relative;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: rgba(230,0,18,.8);
+      transition: width .2s ease;
+    }
+
+    .progress-text {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 14px;
+      color: #111;
+      text-shadow: 0 1px 0 rgba(255,255,255,.7);
+    }
+
+    button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #111;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 9px 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 0 rgba(0,0,0,.12);
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    main {
+      max-width: 1060px;
+      margin: 22px auto 54px;
+      padding: 0 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
+      gap: 10px;
+    }
+
+    .sticker {
+      border: 0;
+      background: transparent;
+      padding: 0;
+      box-shadow: none;
+      border-radius: 8px;
+      position: relative;
+      aspect-ratio: 68 / 93;
+      cursor: pointer;
+      outline-offset: 3px;
+    }
+
+    .sticker img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: var(--card);
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,.22);
+      transition: filter .18s ease, opacity .18s ease, transform .18s ease;
+    }
+
+    .sticker:hover img { transform: scale(1.03); }
+
+    .sticker.collected img {
+      filter: grayscale(1) contrast(.95) brightness(.82);
+      opacity: .58;
+    }
+
+    .sticker.collected::after {
+      content: "획득";
+      position: absolute;
+      inset: auto 6px 6px 6px;
+      padding: 4px 0;
+      border-radius: 999px;
+      background: rgba(0,0,0,.72);
+      color: white;
+      font-size: 12px;
+      font-weight: 900;
+      text-align: center;
+      letter-spacing: -0.02em;
+    }
+
+    .sticker::before {
+      content: attr(data-no);
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      z-index: 2;
+      padding: 2px 5px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(0,0,0,.12);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    footer {
+      text-align: center;
+      padding: 0 16px 34px;
+      color: rgba(0,0,0,.7);
+      font-size: 13px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>포켓몬 30주년 아트웍 스페셜 띠부씰 <span class="red">100종</span></h1>
+    <p class="sub">이미지를 누르면 흑백 처리되어 “모은 씰”로 표시됩니다.</p>
+    <div class="toolbar">
+      <div class="progress-wrap" aria-label="수집 진행률">
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="progress-text" id="progressText">0 / 100 수집</div>
+      </div>
+      <button type="button" id="showMissing">미수집만 보기</button>
+      <button type="button" id="resetBtn">초기화</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <footer>수집 상태는 현재 브라우저의 localStorage에 저장됩니다.</footer>
+
+  <script>
+    const TOTAL = 100;
+    const STORAGE_KEY = "pokemon-30th-sticker-dex-collected";
+    const grid = document.getElementById("grid");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const resetBtn = document.getElementById("resetBtn");
+    const showMissingBtn = document.getElementById("showMissing");
+
+    let collected = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+    let missingOnly = false;
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...collected].sort((a, b) => a - b)));
+    }
+
+    function updateProgress() {
+      const count = collected.size;
+      const percent = Math.round((count / TOTAL) * 100);
+      progressBar.style.width = `${percent}%`;
+      progressText.textContent = `${count} / ${TOTAL} 수집 · ${percent}%`;
+    }
+
+    function render() {
+      grid.innerHTML = "";
+
+      for (let i = 1; i <= TOTAL; i++) {
+        if (missingOnly && collected.has(i)) continue;
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "sticker" + (collected.has(i) ? " collected" : "");
+        btn.dataset.no = `#${String(i).padStart(3, "0")}`;
+        btn.title = `${i}번 스티커`;
+
+        const img = document.createElement("img");
+        img.src = `assets/sticker_${String(i).padStart(3, "0")}.png`;
+        img.alt = `${i}번 포켓몬 스티커`;
+        img.loading = "lazy";
+
+        btn.appendChild(img);
+        btn.addEventListener("click", () => {
+          if (collected.has(i)) collected.delete(i);
+          else collected.add(i);
+          save();
+          render();
+          updateProgress();
+        });
+
+        grid.appendChild(btn);
+      }
+    }
+
+    resetBtn.addEventListener("click", () => {
+      if (!confirm("수집 표시를 전부 초기화할까요?")) return;
+      collected.clear();
+      save();
+      render();
+      updateProgress();
+    });
+
+    showMissingBtn.addEventListener("click", () => {
+      missingOnly = !missingOnly;
+      showMissingBtn.textContent = missingOnly ? "전체 보기" : "미수집만 보기";
+      render();
+    });
+
+    render();
+    updateProgress();
+  </script>
+</body>
+</html>
