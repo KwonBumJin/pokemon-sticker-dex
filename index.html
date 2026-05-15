@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ko">
 <head>
@@ -10,47 +11,40 @@
       --card: #ffffff;
       --text: #161616;
       --muted: #666;
-      --line: rgba(0,0,0,.12);
+      --line: rgba(0,0,0,.14);
       --accent: #e60012;
     }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: var(--bg);
       color: var(--text);
     }
-
     header {
       position: sticky;
       top: 0;
       z-index: 20;
-      background: linear-gradient(180deg, rgba(247,198,0,.98), rgba(247,198,0,.9));
+      background: linear-gradient(180deg, rgba(247,198,0,.98), rgba(247,198,0,.92));
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--line);
       padding: 18px 16px 14px;
       text-align: center;
     }
-
     h1 {
       margin: 0 0 8px;
       font-size: clamp(24px, 4vw, 44px);
       font-weight: 900;
       letter-spacing: -0.04em;
     }
-
     .red { color: var(--accent); }
-
     .sub {
       margin: 0;
       font-size: clamp(14px, 2vw, 20px);
       font-weight: 800;
     }
-
     .toolbar {
-      max-width: 1060px;
+      max-width: 1100px;
       margin: 16px auto 0;
       display: flex;
       gap: 10px;
@@ -58,7 +52,6 @@
       align-items: center;
       flex-wrap: wrap;
     }
-
     .progress-wrap {
       min-width: min(460px, 100%);
       background: rgba(255,255,255,.55);
@@ -68,14 +61,12 @@
       height: 34px;
       position: relative;
     }
-
     .progress-bar {
       width: 0%;
       height: 100%;
       background: rgba(230,0,18,.8);
       transition: width .2s ease;
     }
-
     .progress-text {
       position: absolute;
       inset: 0;
@@ -86,7 +77,16 @@
       color: #111;
       text-shadow: 0 1px 0 rgba(255,255,255,.7);
     }
-
+    .search {
+      width: min(260px, 100%);
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 800;
+      outline: none;
+      box-shadow: 0 2px 0 rgba(0,0,0,.10);
+    }
     button {
       border: 1px solid var(--line);
       background: #fff;
@@ -97,52 +97,51 @@
       cursor: pointer;
       box-shadow: 0 2px 0 rgba(0,0,0,.12);
     }
-
     button:hover { transform: translateY(-1px); }
-
     main {
-      max-width: 1060px;
+      max-width: 1120px;
       margin: 22px auto 54px;
       padding: 0 14px;
     }
-
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+      gap: 12px;
     }
-
-    .sticker {
+    .sticker-card {
       border: 0;
-      background: transparent;
-      padding: 0;
-      box-shadow: none;
-      border-radius: 8px;
+      background: rgba(255,255,255,.78);
+      padding: 7px 7px 9px;
+      box-shadow: 0 2px 0 rgba(0,0,0,.10);
+      border-radius: 10px;
       position: relative;
-      aspect-ratio: 68 / 93;
       cursor: pointer;
       outline-offset: 3px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
-
-    .sticker img {
+    .image-wrap {
+      position: relative;
+      aspect-ratio: 68 / 93;
+      width: 100%;
+    }
+    .sticker-card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
       background: var(--card);
-      border-radius: 4px;
+      border-radius: 5px;
       border: 1px solid rgba(0,0,0,.22);
       transition: filter .18s ease, opacity .18s ease, transform .18s ease;
     }
-
-    .sticker:hover img { transform: scale(1.03); }
-
-    .sticker.collected img {
+    .sticker-card:hover img { transform: scale(1.025); }
+    .sticker-card.collected img {
       filter: grayscale(1) contrast(.95) brightness(.82);
       opacity: .58;
     }
-
-    .sticker.collected::after {
+    .sticker-card.collected .image-wrap::after {
       content: "획득";
       position: absolute;
       inset: auto 6px 6px 6px;
@@ -155,21 +154,37 @@
       text-align: center;
       letter-spacing: -0.02em;
     }
-
-    .sticker::before {
-      content: attr(data-no);
+    .no-badge {
       position: absolute;
       left: 5px;
       top: 5px;
       z-index: 2;
       padding: 2px 5px;
       border-radius: 999px;
-      background: rgba(255,255,255,.88);
+      background: rgba(255,255,255,.9);
       border: 1px solid rgba(0,0,0,.12);
       font-size: 11px;
       font-weight: 900;
     }
-
+    .pokemon-name {
+      min-height: 22px;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 1.15;
+      color: #111;
+      word-break: keep-all;
+    }
+    .empty {
+      grid-column: 1 / -1;
+      background: rgba(255,255,255,.7);
+      border-radius: 14px;
+      padding: 28px 16px;
+      text-align: center;
+      font-weight: 900;
+    }
     footer {
       text-align: center;
       padding: 0 16px 34px;
@@ -182,12 +197,13 @@
 <body>
   <header>
     <h1>포켓몬 30주년 아트웍 스페셜 띠부씰 <span class="red">100종</span></h1>
-    <p class="sub">이미지를 누르면 흑백 처리되어 “모은 씰”로 표시됩니다.</p>
+    <p class="sub">포켓몬 이름 확인 가능 · 이미지를 누르면 “모은 씰”로 표시됩니다.</p>
     <div class="toolbar">
       <div class="progress-wrap" aria-label="수집 진행률">
         <div class="progress-bar" id="progressBar"></div>
         <div class="progress-text" id="progressText">0 / 100 수집</div>
       </div>
+      <input class="search" id="searchInput" type="search" placeholder="포켓몬 이름 검색" />
       <button type="button" id="showMissing">미수집만 보기</button>
       <button type="button" id="resetBtn">초기화</button>
     </div>
@@ -200,16 +216,19 @@
   <footer>수집 상태는 현재 브라우저의 localStorage에 저장됩니다.</footer>
 
   <script>
-    const TOTAL = 100;
+    const STICKERS = [{'no': 1, 'name': '이상해씨', 'image': 'assets/sticker_001.png'}, {'no': 2, 'name': '이상해풀', 'image': 'assets/sticker_002.png'}, {'no': 3, 'name': '이상해꽃', 'image': 'assets/sticker_003.png'}, {'no': 4, 'name': '파이리', 'image': 'assets/sticker_004.png'}, {'no': 5, 'name': '리자드', 'image': 'assets/sticker_005.png'}, {'no': 6, 'name': '리자몽', 'image': 'assets/sticker_006.png'}, {'no': 7, 'name': '꼬부기', 'image': 'assets/sticker_007.png'}, {'no': 8, 'name': '어니부기', 'image': 'assets/sticker_008.png'}, {'no': 9, 'name': '거북왕', 'image': 'assets/sticker_009.png'}, {'no': 10, 'name': '캐터피', 'image': 'assets/sticker_010.png'}, {'no': 11, 'name': '단데기', 'image': 'assets/sticker_011.png'}, {'no': 12, 'name': '버터플', 'image': 'assets/sticker_012.png'}, {'no': 13, 'name': '뿔충이', 'image': 'assets/sticker_013.png'}, {'no': 14, 'name': '딱충이', 'image': 'assets/sticker_014.png'}, {'no': 15, 'name': '독침붕', 'image': 'assets/sticker_015.png'}, {'no': 16, 'name': '구구', 'image': 'assets/sticker_016.png'}, {'no': 17, 'name': '피죤', 'image': 'assets/sticker_017.png'}, {'no': 18, 'name': '피죤투', 'image': 'assets/sticker_018.png'}, {'no': 19, 'name': '꼬렛', 'image': 'assets/sticker_019.png'}, {'no': 20, 'name': '레트라', 'image': 'assets/sticker_020.png'}, {'no': 21, 'name': '아보', 'image': 'assets/sticker_021.png'}, {'no': 22, 'name': '아보크', 'image': 'assets/sticker_022.png'}, {'no': 23, 'name': '피카츄', 'image': 'assets/sticker_023.png'}, {'no': 24, 'name': '라이츄', 'image': 'assets/sticker_024.png'}, {'no': 25, 'name': '식스테일', 'image': 'assets/sticker_025.png'}, {'no': 26, 'name': '나인테일', 'image': 'assets/sticker_026.png'}, {'no': 27, 'name': '푸린', 'image': 'assets/sticker_027.png'}, {'no': 28, 'name': '푸크린', 'image': 'assets/sticker_028.png'}, {'no': 29, 'name': '주뱃', 'image': 'assets/sticker_029.png'}, {'no': 30, 'name': '골뱃', 'image': 'assets/sticker_030.png'}, {'no': 31, 'name': '나옹', 'image': 'assets/sticker_031.png'}, {'no': 32, 'name': '페르시온', 'image': 'assets/sticker_032.png'}, {'no': 33, 'name': '고라파덕', 'image': 'assets/sticker_033.png'}, {'no': 34, 'name': '골덕', 'image': 'assets/sticker_034.png'}, {'no': 35, 'name': '망키', 'image': 'assets/sticker_035.png'}, {'no': 36, 'name': '성원숭', 'image': 'assets/sticker_036.png'}, {'no': 37, 'name': '가디', 'image': 'assets/sticker_037.png'}, {'no': 38, 'name': '윈디', 'image': 'assets/sticker_038.png'}, {'no': 39, 'name': '캐이시', 'image': 'assets/sticker_039.png'}, {'no': 40, 'name': '윤겔라', 'image': 'assets/sticker_040.png'}, {'no': 41, 'name': '후딘', 'image': 'assets/sticker_041.png'}, {'no': 42, 'name': '알통몬', 'image': 'assets/sticker_042.png'}, {'no': 43, 'name': '근육몬', 'image': 'assets/sticker_043.png'}, {'no': 44, 'name': '괴력몬', 'image': 'assets/sticker_044.png'}, {'no': 45, 'name': '모다피', 'image': 'assets/sticker_045.png'}, {'no': 46, 'name': '우츠동', 'image': 'assets/sticker_046.png'}, {'no': 47, 'name': '우츠보트', 'image': 'assets/sticker_047.png'}, {'no': 48, 'name': '꼬마돌', 'image': 'assets/sticker_048.png'}, {'no': 49, 'name': '데구리', 'image': 'assets/sticker_049.png'}, {'no': 50, 'name': '딱구리', 'image': 'assets/sticker_050.png'}, {'no': 51, 'name': '포니타', 'image': 'assets/sticker_051.png'}, {'no': 52, 'name': '날쌩마', 'image': 'assets/sticker_052.png'}, {'no': 53, 'name': '야돈', 'image': 'assets/sticker_053.png'}, {'no': 54, 'name': '야도란', 'image': 'assets/sticker_054.png'}, {'no': 55, 'name': '코일', 'image': 'assets/sticker_055.png'}, {'no': 56, 'name': '레어코일', 'image': 'assets/sticker_056.png'}, {'no': 57, 'name': '파오리', 'image': 'assets/sticker_057.png'}, {'no': 58, 'name': '두두', 'image': 'assets/sticker_058.png'}, {'no': 59, 'name': '두트리오', 'image': 'assets/sticker_059.png'}, {'no': 60, 'name': '질퍽이', 'image': 'assets/sticker_060.png'}, {'no': 61, 'name': '질뻐기', 'image': 'assets/sticker_061.png'}, {'no': 62, 'name': '고오스', 'image': 'assets/sticker_062.png'}, {'no': 63, 'name': '고우스트', 'image': 'assets/sticker_063.png'}, {'no': 64, 'name': '팬텀', 'image': 'assets/sticker_064.png'}, {'no': 65, 'name': '롱스톤', 'image': 'assets/sticker_065.png'}, {'no': 66, 'name': '찌리리공', 'image': 'assets/sticker_066.png'}, {'no': 67, 'name': '붐볼', 'image': 'assets/sticker_067.png'}, {'no': 68, 'name': '탕구리', 'image': 'assets/sticker_068.png'}, {'no': 69, 'name': '텅구리', 'image': 'assets/sticker_069.png'}, {'no': 70, 'name': '또가스', 'image': 'assets/sticker_070.png'}, {'no': 71, 'name': '또도가스', 'image': 'assets/sticker_071.png'}, {'no': 72, 'name': '뿔카노', 'image': 'assets/sticker_072.png'}, {'no': 73, 'name': '코뿌리', 'image': 'assets/sticker_073.png'}, {'no': 74, 'name': '럭키', 'image': 'assets/sticker_074.png'}, {'no': 75, 'name': '캥카', 'image': 'assets/sticker_075.png'}, {'no': 76, 'name': '별가사리', 'image': 'assets/sticker_076.png'}, {'no': 77, 'name': '아쿠스타', 'image': 'assets/sticker_077.png'}, {'no': 78, 'name': '스라크', 'image': 'assets/sticker_078.png'}, {'no': 79, 'name': '에레브', 'image': 'assets/sticker_079.png'}, {'no': 80, 'name': '마그마', 'image': 'assets/sticker_080.png'}, {'no': 81, 'name': '쁘사이저', 'image': 'assets/sticker_081.png'}, {'no': 82, 'name': '켄타로스', 'image': 'assets/sticker_082.png'}, {'no': 83, 'name': '잉어킹', 'image': 'assets/sticker_083.png'}, {'no': 84, 'name': '갸라도스', 'image': 'assets/sticker_084.png'}, {'no': 85, 'name': '라프라스', 'image': 'assets/sticker_085.png'}, {'no': 86, 'name': '메타몽', 'image': 'assets/sticker_086.png'}, {'no': 87, 'name': '이브이', 'image': 'assets/sticker_087.png'}, {'no': 88, 'name': '샤미드', 'image': 'assets/sticker_088.png'}, {'no': 89, 'name': '쥬피썬더', 'image': 'assets/sticker_089.png'}, {'no': 90, 'name': '부스터', 'image': 'assets/sticker_090.png'}, {'no': 91, 'name': '폴리곤', 'image': 'assets/sticker_091.png'}, {'no': 92, 'name': '프테라', 'image': 'assets/sticker_092.png'}, {'no': 93, 'name': '잠만보', 'image': 'assets/sticker_093.png'}, {'no': 94, 'name': '프리져', 'image': 'assets/sticker_094.png'}, {'no': 95, 'name': '썬더', 'image': 'assets/sticker_095.png'}, {'no': 96, 'name': '파이어', 'image': 'assets/sticker_096.png'}, {'no': 97, 'name': '미뇽', 'image': 'assets/sticker_097.png'}, {'no': 98, 'name': '신뇽', 'image': 'assets/sticker_098.png'}, {'no': 99, 'name': '망나뇽', 'image': 'assets/sticker_099.png'}, {'no': 100, 'name': '뮤츠', 'image': 'assets/sticker_100.png'}];
+    const TOTAL = STICKERS.length;
     const STORAGE_KEY = "pokemon-30th-sticker-dex-collected";
     const grid = document.getElementById("grid");
     const progressBar = document.getElementById("progressBar");
     const progressText = document.getElementById("progressText");
     const resetBtn = document.getElementById("resetBtn");
     const showMissingBtn = document.getElementById("showMissing");
+    const searchInput = document.getElementById("searchInput");
 
     let collected = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
     let missingOnly = false;
+    let query = "";
 
     function save() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify([...collected].sort((a, b) => a - b)));
@@ -224,25 +243,51 @@
 
     function render() {
       grid.innerHTML = "";
+      const filtered = STICKERS.filter((sticker) => {
+        if (missingOnly && collected.has(sticker.no)) return false;
+        if (query && !sticker.name.includes(query)) return false;
+        return true;
+      });
 
-      for (let i = 1; i <= TOTAL; i++) {
-        if (missingOnly && collected.has(i)) continue;
+      if (filtered.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "표시할 스티커가 없습니다.";
+        grid.appendChild(empty);
+        return;
+      }
 
+      for (const sticker of filtered) {
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "sticker" + (collected.has(i) ? " collected" : "");
-        btn.dataset.no = `#${String(i).padStart(3, "0")}`;
-        btn.title = `${i}번 스티커`;
+        btn.className = "sticker-card" + (collected.has(sticker.no) ? " collected" : "");
+        btn.title = `${String(sticker.no).padStart(3, "0")}번 ${sticker.name}`;
+        btn.setAttribute("aria-label", btn.title);
+
+        const imageWrap = document.createElement("div");
+        imageWrap.className = "image-wrap";
+
+        const badge = document.createElement("span");
+        badge.className = "no-badge";
+        badge.textContent = `#${String(sticker.no).padStart(3, "0")}`;
 
         const img = document.createElement("img");
-        img.src = `assets/sticker_${String(i).padStart(3, "0")}.png`;
-        img.alt = `${i}번 포켓몬 스티커`;
+        img.src = sticker.image;
+        img.alt = `${sticker.name} 포켓몬 스티커`;
         img.loading = "lazy";
 
-        btn.appendChild(img);
+        const name = document.createElement("div");
+        name.className = "pokemon-name";
+        name.textContent = sticker.name;
+
+        imageWrap.appendChild(badge);
+        imageWrap.appendChild(img);
+        btn.appendChild(imageWrap);
+        btn.appendChild(name);
+
         btn.addEventListener("click", () => {
-          if (collected.has(i)) collected.delete(i);
-          else collected.add(i);
+          if (collected.has(sticker.no)) collected.delete(sticker.no);
+          else collected.add(sticker.no);
           save();
           render();
           updateProgress();
@@ -263,6 +308,11 @@
     showMissingBtn.addEventListener("click", () => {
       missingOnly = !missingOnly;
       showMissingBtn.textContent = missingOnly ? "전체 보기" : "미수집만 보기";
+      render();
+    });
+
+    searchInput.addEventListener("input", (event) => {
+      query = event.target.value.trim();
       render();
     });
 
