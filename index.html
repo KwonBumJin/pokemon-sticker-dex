@@ -3,45 +3,228 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>포켓몬 30주년 뿌띠뿌띠씰 도감</title>
+  <title>포켓몬 30주년 띠부씰 도감</title>
+
   <style>
     :root {
-      --bg: #f7c600;
-      --card: #ffffff;
-      --text: #161616;
-      --muted: #666;
-      --line: rgba(0,0,0,.14);
-      --accent: #e60012;
+      --red: #d71920;
+      --dark-red: #9e1218;
+      --yellow: #ffcb05;
+      --blue: #2a75bb;
+      --dark-blue: #1d4f8f;
+      --cream: #fff8d8;
+      --paper: #fffef4;
+      --black: #191919;
+      --line: rgba(0,0,0,.22);
+      --muted: rgba(0,0,0,.62);
     }
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      color: var(--black);
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,.25) 0 7%, transparent 8%),
+        linear-gradient(135deg, #e51d2a 0%, #d71920 45%, #9e1218 100%);
+      background-attachment: fixed;
     }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .12;
+      background-image:
+        linear-gradient(rgba(255,255,255,.25) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.25) 1px, transparent 1px);
+      background-size: 18px 18px;
+      z-index: -1;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .start-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at center 42%, #fff 0 0.8%, transparent 1%),
+        linear-gradient(#d71920 0 47%, #191919 47% 53%, #fffef4 53% 100%);
+      transition: opacity .35s ease, transform .35s ease;
+    }
+
+    .start-screen.hide {
+      opacity: 0;
+      transform: scale(1.02);
+      pointer-events: none;
+    }
+
+    .start-box {
+      width: min(460px, 100%);
+      background: rgba(255, 254, 244, .96);
+      border: 5px solid #191919;
+      border-radius: 26px;
+      padding: 32px 24px 28px;
+      text-align: center;
+      box-shadow:
+        0 12px 0 rgba(0,0,0,.28),
+        inset 0 0 0 4px rgba(255,203,5,.65);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .start-box::before {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 24px solid rgba(215,25,32,.12);
+      right: -80px;
+      top: -80px;
+    }
+
+    .start-kicker {
+      margin: 0 0 8px;
+      color: var(--dark-blue);
+      font-size: 13px;
+      font-weight: 1000;
+      letter-spacing: .12em;
+    }
+
+    .start-title {
+      margin: 0;
+      font-size: clamp(38px, 9vw, 58px);
+      font-weight: 1000;
+      line-height: .92;
+      letter-spacing: -0.075em;
+      color: var(--yellow);
+      text-shadow:
+        3px 0 var(--blue),
+        -3px 0 var(--blue),
+        0 3px var(--blue),
+        0 -3px var(--blue),
+        4px 5px 0 var(--dark-blue);
+    }
+
+    .start-sub {
+      margin: 20px 0 0;
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .press-start {
+      margin-top: 28px;
+      animation: blink 1s steps(2, start) infinite;
+      color: var(--dark-red);
+      font-size: 14px;
+      font-weight: 1000;
+      letter-spacing: .04em;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: .28;
+      }
+    }
+
+    .start-btn {
+      margin-top: 10px;
+      width: 100%;
+      padding: 17px 18px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #ff3945, #d71920);
+      color: #fff;
+      font-size: 22px;
+      font-weight: 1000;
+      border: 3px solid #191919;
+      box-shadow: 0 7px 0 rgba(0,0,0,.35);
+      transition: transform .08s ease, box-shadow .08s ease, filter .15s ease;
+    }
+
+    .start-btn:hover {
+      filter: brightness(1.06);
+      transform: translateY(-2px);
+    }
+
+    .start-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 rgba(0,0,0,.35);
+    }
+
     header {
       position: sticky;
       top: 0;
       z-index: 20;
-      background: linear-gradient(180deg, rgba(247,198,0,.98), rgba(247,198,0,.92));
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--line);
       padding: 18px 16px 14px;
       text-align: center;
+      background:
+        linear-gradient(180deg, rgba(255,248,216,.97), rgba(255,248,216,.92));
+      border-bottom: 5px solid #191919;
+      box-shadow: 0 4px 0 rgba(0,0,0,.18);
+      backdrop-filter: blur(8px);
     }
+
+    .header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
     h1 {
       margin: 0 0 8px;
       font-size: clamp(24px, 4vw, 44px);
-      font-weight: 900;
-      letter-spacing: -0.04em;
+      font-weight: 1000;
+      letter-spacing: -0.055em;
+      line-height: 1.05;
     }
-    .red { color: var(--accent); }
+
+    .red {
+      color: var(--red);
+    }
+
     .sub {
       margin: 0;
-      font-size: clamp(14px, 2vw, 20px);
-      font-weight: 800;
+      font-size: clamp(14px, 2vw, 19px);
+      font-weight: 900;
+      color: rgba(0,0,0,.76);
     }
+
+    .notice {
+      margin-top: 5px;
+      font-size: 14px;
+      font-weight: 900;
+      color: rgba(0,0,0,.58);
+      letter-spacing: -0.02em;
+      text-align: left;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 4px;
+    }
+
     .toolbar {
       max-width: 1100px;
       margin: 16px auto 0;
@@ -51,100 +234,149 @@
       align-items: center;
       flex-wrap: wrap;
     }
+
     .progress-wrap {
       min-width: min(460px, 100%);
-      background: rgba(255,255,255,.55);
-      border: 1px solid var(--line);
+      background: #fff;
+      border: 3px solid #191919;
       border-radius: 999px;
       overflow: hidden;
-      height: 34px;
+      height: 36px;
       position: relative;
+      box-shadow: 0 3px 0 rgba(0,0,0,.18);
     }
+
     .progress-bar {
       width: 0%;
       height: 100%;
-      background: rgba(230,0,18,.8);
-      transition: width .2s ease;
+      background: linear-gradient(90deg, var(--yellow), #ffdf4d);
+      transition: width .22s ease;
     }
+
     .progress-text {
       position: absolute;
       inset: 0;
       display: grid;
       place-items: center;
-      font-weight: 900;
+      font-weight: 1000;
       font-size: 14px;
       color: #111;
-      text-shadow: 0 1px 0 rgba(255,255,255,.7);
+      text-shadow: 0 1px 0 rgba(255,255,255,.8);
     }
+
+    .search,
+    .tool-btn {
+      border: 3px solid #191919;
+      background: #fffef4;
+      color: #111;
+      font-weight: 1000;
+      border-radius: 999px;
+      box-shadow: 0 3px 0 rgba(0,0,0,.20);
+    }
+
     .search {
       width: min(260px, 100%);
-      border: 1px solid var(--line);
-      background: #fff;
-      border-radius: 999px;
       padding: 10px 14px;
-      font-weight: 800;
       outline: none;
-      box-shadow: 0 2px 0 rgba(0,0,0,.10);
     }
-    button {
-      border: 1px solid var(--line);
+
+    .search:focus {
       background: #fff;
-      color: #111;
-      font-weight: 800;
-      border-radius: 999px;
-      padding: 9px 14px;
-      cursor: pointer;
-      box-shadow: 0 2px 0 rgba(0,0,0,.12);
+      outline: 3px solid rgba(42,117,187,.25);
     }
-    button:hover { transform: translateY(-1px); }
+
+    .tool-btn {
+      padding: 9px 14px;
+      transition: transform .08s ease, box-shadow .08s ease;
+    }
+
+    .tool-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .tool-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 rgba(0,0,0,.20);
+    }
+
     main {
       max-width: 1120px;
-      margin: 22px auto 54px;
+      margin: 24px auto 54px;
       padding: 0 14px;
     }
+
+    .dex-frame {
+      background: rgba(255,248,216,.86);
+      border: 5px solid #191919;
+      border-radius: 22px;
+      padding: 14px;
+      box-shadow: 0 8px 0 rgba(0,0,0,.24);
+    }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
       gap: 12px;
     }
+
     .sticker-card {
-      border: 0;
-      background: rgba(255,255,255,.78);
+      border: 3px solid #191919;
+      background: var(--paper);
       padding: 7px 7px 9px;
-      box-shadow: 0 2px 0 rgba(0,0,0,.10);
-      border-radius: 10px;
+      box-shadow: 0 4px 0 rgba(0,0,0,.22);
+      border-radius: 12px;
       position: relative;
       cursor: pointer;
       outline-offset: 3px;
       display: flex;
       flex-direction: column;
       gap: 6px;
+      transition: transform .08s ease, box-shadow .08s ease, background .12s ease;
     }
+
+    .sticker-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 rgba(0,0,0,.22);
+    }
+
+    .sticker-card:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 rgba(0,0,0,.22);
+    }
+
     .image-wrap {
       position: relative;
       aspect-ratio: 68 / 93;
       width: 100%;
     }
+
     .sticker-card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      background: var(--card);
-      border-radius: 5px;
-      border: 1px solid rgba(0,0,0,.22);
+      background: #fff;
+      border-radius: 6px;
+      border: 2px solid rgba(0,0,0,.42);
       transition: filter .18s ease, opacity .18s ease, transform .18s ease;
     }
-    .sticker-card:hover img { transform: scale(1.025); }
+
+    .sticker-card:hover img {
+      transform: scale(1.02);
+    }
+
+    .sticker-card:not(.collected) {
+      background: rgba(255,255,255,.74);
+    }
 
     .sticker-card:not(.collected) img {
       filter: grayscale(1) contrast(.95) brightness(.82);
-      opacity: .58;
+      opacity: .55;
     }
 
     .sticker-card.collected {
-      background: rgba(255,255,255,.95);
-      outline: 3px solid rgba(230,0,18,.35);
+      background: #fff;
+      outline: 4px solid rgba(255,203,5,.72);
     }
 
     .count-badge {
@@ -152,12 +384,13 @@
       inset: auto 6px 6px 6px;
       padding: 4px 0;
       border-radius: 999px;
-      background: rgba(0,0,0,.76);
-      color: white;
+      background: rgba(25,25,25,.82);
+      color: #fff;
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 1000;
       text-align: center;
       letter-spacing: -0.02em;
+      border: 1px solid rgba(255,255,255,.25);
     }
 
     .minus-btn {
@@ -165,19 +398,19 @@
       right: 5px;
       top: 5px;
       z-index: 3;
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       padding: 0;
       border-radius: 999px;
-      background: rgba(230,0,18,.95);
+      background: linear-gradient(180deg, #ff3945, #d71920);
       color: #fff;
-      border: 1px solid rgba(0,0,0,.18);
+      border: 2px solid #191919;
       font-size: 18px;
       line-height: 1;
-      font-weight: 900;
+      font-weight: 1000;
       display: none;
       place-items: center;
-      box-shadow: 0 2px 0 rgba(0,0,0,.18);
+      box-shadow: 0 2px 0 rgba(0,0,0,.35);
     }
 
     .sticker-card.collected .minus-btn {
@@ -189,81 +422,224 @@
       left: 5px;
       top: 5px;
       z-index: 2;
-      padding: 2px 5px;
+      padding: 2px 6px;
       border-radius: 999px;
-      background: rgba(255,255,255,.9);
-      border: 1px solid rgba(0,0,0,.12);
+      background: rgba(255,255,255,.93);
+      border: 2px solid rgba(0,0,0,.55);
       font-size: 11px;
-      font-weight: 900;
+      font-weight: 1000;
     }
+
     .pokemon-name {
-      min-height: 22px;
+      min-height: 24px;
       display: grid;
       place-items: center;
       font-size: 13px;
-      font-weight: 900;
-      letter-spacing: -0.05em;
+      font-weight: 1000;
+      letter-spacing: -0.055em;
       line-height: 1.15;
       color: #111;
       word-break: keep-all;
+      text-align: center;
     }
+
     .empty {
       grid-column: 1 / -1;
-      background: rgba(255,255,255,.7);
+      background: rgba(255,255,255,.86);
+      border: 3px solid #191919;
       border-radius: 14px;
       padding: 28px 16px;
       text-align: center;
-      font-weight: 900;
+      font-weight: 1000;
+      box-shadow: 0 4px 0 rgba(0,0,0,.18);
     }
+
     footer {
       text-align: center;
       padding: 0 16px 34px;
-      color: rgba(0,0,0,.7);
+      color: rgba(255,255,255,.86);
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 800;
+      text-shadow: 0 1px 0 rgba(0,0,0,.25);
     }
-	.notice {
-	  margin-top: 4px;
-	  font-size: 14px;
-	  font-weight: 800;
-	  color: rgba(0,0,0,.6);
-	  letter-spacing: -0.02em;
 
-	  text-align: left;
-	  max-width: 1100px;
-	  margin-left: auto;
-	  margin-right: auto;
-	  padding-left: 4px;
-	}
+    @media (max-width: 520px) {
+      header {
+        padding-top: 14px;
+      }
+
+      .notice {
+        font-size: 12px;
+      }
+
+      .grid {
+        grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+      }
+
+      .dex-frame {
+        padding: 10px;
+        border-width: 4px;
+      }
+    }
   </style>
 </head>
+
 <body>
+  <div id="startScreen" class="start-screen">
+    <div class="start-box">
+      <p class="start-kicker">30TH ARTWORK SPECIAL</p>
+      <h1 class="start-title">STICKER<br>DEX</h1>
+      <p class="start-sub">포켓몬 30주년 띠부씰 도감</p>
+      <button type="button" class="start-btn" id="gameStartBtn">▶ START</button>
+    </div>
+  </div>
+
+  <audio id="bgm" loop>
+    <source src="" type="audio/mpeg">
+  </audio>
+
+  <audio id="clickSound">
+    <source src="" type="audio/mpeg">
+  </audio>
+
   <header>
-    <h1>포켓몬 30주년 아트웍 스페셜 띠부씰 <span class="red">100종</span></h1>
-    <p class="sub">카드를 누르면 보유 개수 +1 · 빨간 － 버튼을 누르면 -1 됩니다.</p>
-	<p class="notice">* 중복씰 체크 기능 추가</p>
-    <div class="toolbar">
-      <div class="progress-wrap" aria-label="수집 진행률">
-        <div class="progress-bar" id="progressBar"></div>
-        <div class="progress-text" id="progressText">0 / 100 수집</div>
+    <div class="header-inner">
+      <h1>포켓몬 30주년 아트웍 스페셜 띠부씰 <span class="red">100종</span></h1>
+      <p class="sub">카드를 누르면 보유 개수 +1 · 빨간 － 버튼을 누르면 -1 됩니다.</p>
+      <p class="notice">* 중복씰 체크 기능 추가</p>
+
+      <div class="toolbar">
+        <div class="progress-wrap" aria-label="수집 진행률">
+          <div class="progress-bar" id="progressBar"></div>
+          <div class="progress-text" id="progressText">0 / 100 수집</div>
+        </div>
+
+        <input class="search" id="searchInput" type="search" placeholder="포켓몬 이름/번호 검색" />
+        <button class="tool-btn" type="button" id="showMissing">미수집만 보기</button>
+        <button class="tool-btn" type="button" id="resetBtn">초기화</button>
       </div>
-      <input class="search" id="searchInput" type="search" placeholder="포켓몬 이름/번호 검색" />
-      <button type="button" id="showMissing">미수집만 보기</button>
-      <button type="button" id="resetBtn">초기화</button>
     </div>
   </header>
 
   <main>
-    <div class="grid" id="grid"></div>
+    <div class="dex-frame">
+      <div class="grid" id="grid"></div>
+    </div>
   </main>
 
   <footer>보유 개수는 현재 브라우저의 localStorage에 저장됩니다.</footer>
 
   <script>
-    const STICKERS = [{'no': 1, 'name': '이상해씨', 'image': 'assets/sticker_001.png'}, {'no': 2, 'name': '이상해풀', 'image': 'assets/sticker_002.png'}, {'no': 3, 'name': '이상해꽃', 'image': 'assets/sticker_003.png'}, {'no': 4, 'name': '파이리', 'image': 'assets/sticker_004.png'}, {'no': 5, 'name': '리자드', 'image': 'assets/sticker_005.png'}, {'no': 6, 'name': '리자몽', 'image': 'assets/sticker_006.png'}, {'no': 7, 'name': '꼬부기', 'image': 'assets/sticker_007.png'}, {'no': 8, 'name': '어니부기', 'image': 'assets/sticker_008.png'}, {'no': 9, 'name': '거북왕', 'image': 'assets/sticker_009.png'}, {'no': 10, 'name': '캐터피', 'image': 'assets/sticker_010.png'}, {'no': 11, 'name': '단데기', 'image': 'assets/sticker_011.png'}, {'no': 12, 'name': '버터플', 'image': 'assets/sticker_012.png'}, {'no': 13, 'name': '뿔충이', 'image': 'assets/sticker_013.png'}, {'no': 14, 'name': '딱충이', 'image': 'assets/sticker_014.png'}, {'no': 15, 'name': '독침붕', 'image': 'assets/sticker_015.png'}, {'no': 16, 'name': '구구', 'image': 'assets/sticker_016.png'}, {'no': 17, 'name': '피죤', 'image': 'assets/sticker_017.png'}, {'no': 18, 'name': '피죤투', 'image': 'assets/sticker_018.png'}, {'no': 19, 'name': '꼬렛', 'image': 'assets/sticker_019.png'}, {'no': 20, 'name': '레트라', 'image': 'assets/sticker_020.png'}, {'no': 21, 'name': '아보', 'image': 'assets/sticker_021.png'}, {'no': 22, 'name': '아보크', 'image': 'assets/sticker_022.png'}, {'no': 23, 'name': '피카츄', 'image': 'assets/sticker_023.png'}, {'no': 24, 'name': '라이츄', 'image': 'assets/sticker_024.png'}, {'no': 25, 'name': '식스테일', 'image': 'assets/sticker_025.png'}, {'no': 26, 'name': '나인테일', 'image': 'assets/sticker_026.png'}, {'no': 27, 'name': '푸린', 'image': 'assets/sticker_027.png'}, {'no': 28, 'name': '푸크린', 'image': 'assets/sticker_028.png'}, {'no': 29, 'name': '주뱃', 'image': 'assets/sticker_029.png'}, {'no': 30, 'name': '골뱃', 'image': 'assets/sticker_030.png'}, {'no': 31, 'name': '나옹', 'image': 'assets/sticker_031.png'}, {'no': 32, 'name': '페르시온', 'image': 'assets/sticker_032.png'}, {'no': 33, 'name': '고라파덕', 'image': 'assets/sticker_033.png'}, {'no': 34, 'name': '골덕', 'image': 'assets/sticker_034.png'}, {'no': 35, 'name': '망키', 'image': 'assets/sticker_035.png'}, {'no': 36, 'name': '성원숭', 'image': 'assets/sticker_036.png'}, {'no': 37, 'name': '가디', 'image': 'assets/sticker_037.png'}, {'no': 38, 'name': '윈디', 'image': 'assets/sticker_038.png'}, {'no': 39, 'name': '캐이시', 'image': 'assets/sticker_039.png'}, {'no': 40, 'name': '윤겔라', 'image': 'assets/sticker_040.png'}, {'no': 41, 'name': '후딘', 'image': 'assets/sticker_041.png'}, {'no': 42, 'name': '알통몬', 'image': 'assets/sticker_042.png'}, {'no': 43, 'name': '근육몬', 'image': 'assets/sticker_043.png'}, {'no': 44, 'name': '괴력몬', 'image': 'assets/sticker_044.png'}, {'no': 45, 'name': '모다피', 'image': 'assets/sticker_045.png'}, {'no': 46, 'name': '우츠동', 'image': 'assets/sticker_046.png'}, {'no': 47, 'name': '우츠보트', 'image': 'assets/sticker_047.png'}, {'no': 48, 'name': '꼬마돌', 'image': 'assets/sticker_048.png'}, {'no': 49, 'name': '데구리', 'image': 'assets/sticker_049.png'}, {'no': 50, 'name': '딱구리', 'image': 'assets/sticker_050.png'}, {'no': 51, 'name': '포니타', 'image': 'assets/sticker_051.png'}, {'no': 52, 'name': '날쌩마', 'image': 'assets/sticker_052.png'}, {'no': 53, 'name': '야돈', 'image': 'assets/sticker_053.png'}, {'no': 54, 'name': '야도란', 'image': 'assets/sticker_054.png'}, {'no': 55, 'name': '코일', 'image': 'assets/sticker_055.png'}, {'no': 56, 'name': '레어코일', 'image': 'assets/sticker_056.png'}, {'no': 57, 'name': '파오리', 'image': 'assets/sticker_057.png'}, {'no': 58, 'name': '두두', 'image': 'assets/sticker_058.png'}, {'no': 59, 'name': '두트리오', 'image': 'assets/sticker_059.png'}, {'no': 60, 'name': '질퍽이', 'image': 'assets/sticker_060.png'}, {'no': 61, 'name': '질뻐기', 'image': 'assets/sticker_061.png'}, {'no': 62, 'name': '고오스', 'image': 'assets/sticker_062.png'}, {'no': 63, 'name': '고우스트', 'image': 'assets/sticker_063.png'}, {'no': 64, 'name': '팬텀', 'image': 'assets/sticker_064.png'}, {'no': 65, 'name': '롱스톤', 'image': 'assets/sticker_065.png'}, {'no': 66, 'name': '찌리리공', 'image': 'assets/sticker_066.png'}, {'no': 67, 'name': '붐볼', 'image': 'assets/sticker_067.png'}, {'no': 68, 'name': '탕구리', 'image': 'assets/sticker_068.png'}, {'no': 69, 'name': '텅구리', 'image': 'assets/sticker_069.png'}, {'no': 70, 'name': '또가스', 'image': 'assets/sticker_070.png'}, {'no': 71, 'name': '또도가스', 'image': 'assets/sticker_071.png'}, {'no': 72, 'name': '뿔카노', 'image': 'assets/sticker_072.png'}, {'no': 73, 'name': '코뿌리', 'image': 'assets/sticker_073.png'}, {'no': 74, 'name': '럭키', 'image': 'assets/sticker_074.png'}, {'no': 75, 'name': '캥카', 'image': 'assets/sticker_075.png'}, {'no': 76, 'name': '별가사리', 'image': 'assets/sticker_076.png'}, {'no': 77, 'name': '아쿠스타', 'image': 'assets/sticker_077.png'}, {'no': 78, 'name': '스라크', 'image': 'assets/sticker_078.png'}, {'no': 79, 'name': '에레브', 'image': 'assets/sticker_079.png'}, {'no': 80, 'name': '마그마', 'image': 'assets/sticker_080.png'}, {'no': 81, 'name': '쁘사이저', 'image': 'assets/sticker_081.png'}, {'no': 82, 'name': '켄타로스', 'image': 'assets/sticker_082.png'}, {'no': 83, 'name': '잉어킹', 'image': 'assets/sticker_083.png'}, {'no': 84, 'name': '갸라도스', 'image': 'assets/sticker_084.png'}, {'no': 85, 'name': '라프라스', 'image': 'assets/sticker_085.png'}, {'no': 86, 'name': '메타몽', 'image': 'assets/sticker_086.png'}, {'no': 87, 'name': '이브이', 'image': 'assets/sticker_087.png'}, {'no': 88, 'name': '샤미드', 'image': 'assets/sticker_088.png'}, {'no': 89, 'name': '쥬피썬더', 'image': 'assets/sticker_089.png'}, {'no': 90, 'name': '부스터', 'image': 'assets/sticker_090.png'}, {'no': 91, 'name': '폴리곤', 'image': 'assets/sticker_091.png'}, {'no': 92, 'name': '프테라', 'image': 'assets/sticker_092.png'}, {'no': 93, 'name': '잠만보', 'image': 'assets/sticker_093.png'}, {'no': 94, 'name': '프리져', 'image': 'assets/sticker_094.png'}, {'no': 95, 'name': '썬더', 'image': 'assets/sticker_095.png'}, {'no': 96, 'name': '파이어', 'image': 'assets/sticker_096.png'}, {'no': 97, 'name': '미뇽', 'image': 'assets/sticker_097.png'}, {'no': 98, 'name': '신뇽', 'image': 'assets/sticker_098.png'}, {'no': 99, 'name': '망나뇽', 'image': 'assets/sticker_099.png'}, {'no': 100, 'name': '뮤츠', 'image': 'assets/sticker_100.png'}];
+    const STICKERS = [
+      {'no': 1, 'name': '이상해씨', 'image': 'assets/sticker_001.png'},
+      {'no': 2, 'name': '이상해풀', 'image': 'assets/sticker_002.png'},
+      {'no': 3, 'name': '이상해꽃', 'image': 'assets/sticker_003.png'},
+      {'no': 4, 'name': '파이리', 'image': 'assets/sticker_004.png'},
+      {'no': 5, 'name': '리자드', 'image': 'assets/sticker_005.png'},
+      {'no': 6, 'name': '리자몽', 'image': 'assets/sticker_006.png'},
+      {'no': 7, 'name': '꼬부기', 'image': 'assets/sticker_007.png'},
+      {'no': 8, 'name': '어니부기', 'image': 'assets/sticker_008.png'},
+      {'no': 9, 'name': '거북왕', 'image': 'assets/sticker_009.png'},
+      {'no': 10, 'name': '캐터피', 'image': 'assets/sticker_010.png'},
+      {'no': 11, 'name': '단데기', 'image': 'assets/sticker_011.png'},
+      {'no': 12, 'name': '버터플', 'image': 'assets/sticker_012.png'},
+      {'no': 13, 'name': '뿔충이', 'image': 'assets/sticker_013.png'},
+      {'no': 14, 'name': '딱충이', 'image': 'assets/sticker_014.png'},
+      {'no': 15, 'name': '독침붕', 'image': 'assets/sticker_015.png'},
+      {'no': 16, 'name': '구구', 'image': 'assets/sticker_016.png'},
+      {'no': 17, 'name': '피죤', 'image': 'assets/sticker_017.png'},
+      {'no': 18, 'name': '피죤투', 'image': 'assets/sticker_018.png'},
+      {'no': 19, 'name': '꼬렛', 'image': 'assets/sticker_019.png'},
+      {'no': 20, 'name': '레트라', 'image': 'assets/sticker_020.png'},
+      {'no': 21, 'name': '아보', 'image': 'assets/sticker_021.png'},
+      {'no': 22, 'name': '아보크', 'image': 'assets/sticker_022.png'},
+      {'no': 23, 'name': '피카츄', 'image': 'assets/sticker_023.png'},
+      {'no': 24, 'name': '라이츄', 'image': 'assets/sticker_024.png'},
+      {'no': 25, 'name': '식스테일', 'image': 'assets/sticker_025.png'},
+      {'no': 26, 'name': '나인테일', 'image': 'assets/sticker_026.png'},
+      {'no': 27, 'name': '푸린', 'image': 'assets/sticker_027.png'},
+      {'no': 28, 'name': '푸크린', 'image': 'assets/sticker_028.png'},
+      {'no': 29, 'name': '주뱃', 'image': 'assets/sticker_029.png'},
+      {'no': 30, 'name': '골뱃', 'image': 'assets/sticker_030.png'},
+      {'no': 31, 'name': '나옹', 'image': 'assets/sticker_031.png'},
+      {'no': 32, 'name': '페르시온', 'image': 'assets/sticker_032.png'},
+      {'no': 33, 'name': '고라파덕', 'image': 'assets/sticker_033.png'},
+      {'no': 34, 'name': '골덕', 'image': 'assets/sticker_034.png'},
+      {'no': 35, 'name': '망키', 'image': 'assets/sticker_035.png'},
+      {'no': 36, 'name': '성원숭', 'image': 'assets/sticker_036.png'},
+      {'no': 37, 'name': '가디', 'image': 'assets/sticker_037.png'},
+      {'no': 38, 'name': '윈디', 'image': 'assets/sticker_038.png'},
+      {'no': 39, 'name': '캐이시', 'image': 'assets/sticker_039.png'},
+      {'no': 40, 'name': '윤겔라', 'image': 'assets/sticker_040.png'},
+      {'no': 41, 'name': '후딘', 'image': 'assets/sticker_041.png'},
+      {'no': 42, 'name': '알통몬', 'image': 'assets/sticker_042.png'},
+      {'no': 43, 'name': '근육몬', 'image': 'assets/sticker_043.png'},
+      {'no': 44, 'name': '괴력몬', 'image': 'assets/sticker_044.png'},
+      {'no': 45, 'name': '모다피', 'image': 'assets/sticker_045.png'},
+      {'no': 46, 'name': '우츠동', 'image': 'assets/sticker_046.png'},
+      {'no': 47, 'name': '우츠보트', 'image': 'assets/sticker_047.png'},
+      {'no': 48, 'name': '꼬마돌', 'image': 'assets/sticker_048.png'},
+      {'no': 49, 'name': '데구리', 'image': 'assets/sticker_049.png'},
+      {'no': 50, 'name': '딱구리', 'image': 'assets/sticker_050.png'},
+      {'no': 51, 'name': '포니타', 'image': 'assets/sticker_051.png'},
+      {'no': 52, 'name': '날쌩마', 'image': 'assets/sticker_052.png'},
+      {'no': 53, 'name': '야돈', 'image': 'assets/sticker_053.png'},
+      {'no': 54, 'name': '야도란', 'image': 'assets/sticker_054.png'},
+      {'no': 55, 'name': '코일', 'image': 'assets/sticker_055.png'},
+      {'no': 56, 'name': '레어코일', 'image': 'assets/sticker_056.png'},
+      {'no': 57, 'name': '파오리', 'image': 'assets/sticker_057.png'},
+      {'no': 58, 'name': '두두', 'image': 'assets/sticker_058.png'},
+      {'no': 59, 'name': '두트리오', 'image': 'assets/sticker_059.png'},
+      {'no': 60, 'name': '질퍽이', 'image': 'assets/sticker_060.png'},
+      {'no': 61, 'name': '질뻐기', 'image': 'assets/sticker_061.png'},
+      {'no': 62, 'name': '고오스', 'image': 'assets/sticker_062.png'},
+      {'no': 63, 'name': '고우스트', 'image': 'assets/sticker_063.png'},
+      {'no': 64, 'name': '팬텀', 'image': 'assets/sticker_064.png'},
+      {'no': 65, 'name': '롱스톤', 'image': 'assets/sticker_065.png'},
+      {'no': 66, 'name': '찌리리공', 'image': 'assets/sticker_066.png'},
+      {'no': 67, 'name': '붐볼', 'image': 'assets/sticker_067.png'},
+      {'no': 68, 'name': '탕구리', 'image': 'assets/sticker_068.png'},
+      {'no': 69, 'name': '텅구리', 'image': 'assets/sticker_069.png'},
+      {'no': 70, 'name': '또가스', 'image': 'assets/sticker_070.png'},
+      {'no': 71, 'name': '또도가스', 'image': 'assets/sticker_071.png'},
+      {'no': 72, 'name': '뿔카노', 'image': 'assets/sticker_072.png'},
+      {'no': 73, 'name': '코뿌리', 'image': 'assets/sticker_073.png'},
+      {'no': 74, 'name': '럭키', 'image': 'assets/sticker_074.png'},
+      {'no': 75, 'name': '캥카', 'image': 'assets/sticker_075.png'},
+      {'no': 76, 'name': '별가사리', 'image': 'assets/sticker_076.png'},
+      {'no': 77, 'name': '아쿠스타', 'image': 'assets/sticker_077.png'},
+      {'no': 78, 'name': '스라크', 'image': 'assets/sticker_078.png'},
+      {'no': 79, 'name': '에레브', 'image': 'assets/sticker_079.png'},
+      {'no': 80, 'name': '마그마', 'image': 'assets/sticker_080.png'},
+      {'no': 81, 'name': '쁘사이저', 'image': 'assets/sticker_081.png'},
+      {'no': 82, 'name': '켄타로스', 'image': 'assets/sticker_082.png'},
+      {'no': 83, 'name': '잉어킹', 'image': 'assets/sticker_083.png'},
+      {'no': 84, 'name': '갸라도스', 'image': 'assets/sticker_084.png'},
+      {'no': 85, 'name': '라프라스', 'image': 'assets/sticker_085.png'},
+      {'no': 86, 'name': '메타몽', 'image': 'assets/sticker_086.png'},
+      {'no': 87, 'name': '이브이', 'image': 'assets/sticker_087.png'},
+      {'no': 88, 'name': '샤미드', 'image': 'assets/sticker_088.png'},
+      {'no': 89, 'name': '쥬피썬더', 'image': 'assets/sticker_089.png'},
+      {'no': 90, 'name': '부스터', 'image': 'assets/sticker_090.png'},
+      {'no': 91, 'name': '폴리곤', 'image': 'assets/sticker_091.png'},
+      {'no': 92, 'name': '프테라', 'image': 'assets/sticker_092.png'},
+      {'no': 93, 'name': '잠만보', 'image': 'assets/sticker_093.png'},
+      {'no': 94, 'name': '프리져', 'image': 'assets/sticker_094.png'},
+      {'no': 95, 'name': '썬더', 'image': 'assets/sticker_095.png'},
+      {'no': 96, 'name': '파이어', 'image': 'assets/sticker_096.png'},
+      {'no': 97, 'name': '미뇽', 'image': 'assets/sticker_097.png'},
+      {'no': 98, 'name': '신뇽', 'image': 'assets/sticker_098.png'},
+      {'no': 99, 'name': '망나뇽', 'image': 'assets/sticker_099.png'},
+      {'no': 100, 'name': '뮤츠', 'image': 'assets/sticker_100.png'}
+    ];
 
     const TOTAL = STICKERS.length;
     const STORAGE_KEY = "pokemon-30th-sticker-dex-owned-counts";
+
+    const startScreen = document.getElementById("startScreen");
+    const gameStartBtn = document.getElementById("gameStartBtn");
+    const bgm = document.getElementById("bgm");
+    const clickSound = document.getElementById("clickSound");
 
     const grid = document.getElementById("grid");
     const progressBar = document.getElementById("progressBar");
@@ -275,6 +651,38 @@
     let owned = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
     let missingOnly = false;
     let query = "";
+
+    function playClickSound() {
+      if (!clickSound) return;
+
+      try {
+        clickSound.currentTime = 0;
+        clickSound.play();
+      } catch (e) {
+        console.log("click sound blocked or missing");
+      }
+    }
+
+    function startBgm() {
+      if (!bgm) return;
+
+      bgm.volume = 0.25;
+
+      bgm.play().catch(() => {
+        console.log("BGM blocked or missing");
+      });
+    }
+
+    gameStartBtn.addEventListener("click", () => {
+      playClickSound();
+      startBgm();
+
+      startScreen.classList.add("hide");
+
+      setTimeout(() => {
+        startScreen.remove();
+      }, 360);
+    });
 
     function save() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(owned));
@@ -378,6 +786,7 @@
 
         minusBtn.addEventListener("click", (event) => {
           event.stopPropagation();
+          playClickSound();
           minusOne(sticker.no);
         });
 
@@ -403,6 +812,7 @@
         btn.appendChild(name);
 
         btn.addEventListener("click", () => {
+          playClickSound();
           addOne(sticker.no);
         });
 
@@ -411,6 +821,8 @@
     }
 
     resetBtn.addEventListener("click", () => {
+      playClickSound();
+
       if (!confirm("보유 개수를 전부 초기화할까요?")) return;
 
       owned = {};
@@ -420,6 +832,8 @@
     });
 
     showMissingBtn.addEventListener("click", () => {
+      playClickSound();
+
       missingOnly = !missingOnly;
       showMissingBtn.textContent = missingOnly ? "전체 보기" : "미수집만 보기";
       render();
