@@ -27,6 +27,63 @@
       color: var(--text);
     }
 
+
+    body.user-a {
+      --bg: #dbeafe;
+      --card: #ffffff;
+      --accent: #2563eb;
+      background: linear-gradient(180deg, #dbeafe, #bfdbfe);
+    }
+
+    body.user-b {
+      --bg: #ffe4e6;
+      --card: #ffffff;
+      --accent: #e60012;
+      background: linear-gradient(180deg, #ffe4e6, #fecdd3);
+    }
+
+    body.user-a header {
+      background: linear-gradient(180deg, rgba(219,234,254,.98), rgba(191,219,254,.94));
+    }
+
+    body.user-b header {
+      background: linear-gradient(180deg, rgba(255,228,230,.98), rgba(254,205,211,.94));
+    }
+
+    body.user-a .summary-card,
+    body.user-a .sticker-card,
+    body.user-a .mode-label,
+    body.user-a .progress-wrap,
+    body.user-a .sync-status {
+      background: rgba(255,255,255,.82);
+      border-color: rgba(37,99,235,.20);
+    }
+
+    body.user-b .summary-card,
+    body.user-b .sticker-card,
+    body.user-b .mode-label,
+    body.user-b .progress-wrap,
+    body.user-b .sync-status {
+      background: rgba(255,255,255,.82);
+      border-color: rgba(230,0,18,.18);
+    }
+
+    body.user-a .progress-bar {
+      background: rgba(37,99,235,.82);
+    }
+
+    body.user-b .progress-bar {
+      background: rgba(230,0,18,.82);
+    }
+
+    body.user-a .mode-label {
+      color: #1d4ed8;
+    }
+
+    body.user-b .mode-label {
+      color: #be123c;
+    }
+
     .hidden {
       display: none !important;
     }
@@ -881,9 +938,15 @@
       return { owned, missing, percent };
     }
 
+    function applyUserTheme(user) {
+      document.body.classList.toggle("user-a", user === "A");
+      document.body.classList.toggle("user-b", user === "B");
+    }
+
     function enterUser(user) {
       currentUser = user;
       localStorage.setItem(USER_KEY, user);
+      applyUserTheme(user);
       startScreen.classList.add("hidden");
       app.classList.remove("hidden");
       missingOnly = false;
@@ -895,6 +958,7 @@
     function changeUser() {
       localStorage.removeItem(USER_KEY);
       currentUser = "";
+      applyUserTheme("");
       app.classList.add("hidden");
       startScreen.classList.remove("hidden");
     }
